@@ -1,0 +1,20 @@
+{
+  "name": "halftone",
+  "version": "1.0.0",
+  "description": "Halftone",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "1.14.3",
+    "tslint-config-prettier": "^1.15.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
+  },
+  "author": "Magnus Leo",
+  "license": "ISC"
+}
