@@ -5,14 +5,19 @@ const SATURATION = 1;
 const VALUE = 2;
 
 const svgNameSpace = "http://www.w3.org/2000/svg";
-const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+const canvas = document.createElement("canvas");
+const bodyEl = document.getElementsByTagName("body")[0];
+bodyEl.appendChild(canvas);
 const ctx = canvas.getContext("2d");
 
 if (ctx) {
   const image = new Image();
   image.src = "example.png";
   image.onload = function() {
+    canvas.width = image.width;
+    canvas.height = image.height;
     ctx.drawImage(image, 0, 0);
+
     const imageData = ctx.getImageData(0, 0, image.width, image.height);
     const width = imageData.width;
     const height = imageData.height;
@@ -24,7 +29,7 @@ if (ctx) {
     svg.setAttribute("viewBox", `0 0 ${width * factor} ${height * factor}`);
     svg.setAttribute("width", `${width * factor}`);
     svg.setAttribute("height", `${height * factor}`);
-    document.getElementsByTagName("body")[0].appendChild(svg);
+    bodyEl.appendChild(svg);
 
     for (let i = 0; i < length; i += 4) {
       const pixelNum = i / 4;
