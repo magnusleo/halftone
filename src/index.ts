@@ -1,3 +1,9 @@
+import colorConvert from "color-convert";
+
+const HUE = 0;
+const SATURATION = 1;
+const VALUE = 2;
+
 const svgNameSpace = "http://www.w3.org/2000/svg";
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
@@ -28,14 +34,18 @@ if (ctx) {
       const r = imageData.data[i];
       const g = imageData.data[i + 1];
       const b = imageData.data[i + 2];
-      const luma = 1 - (r + g + b) / 3 / 255;
+      const hsl = colorConvert.rgb.hsl([r, g, b]);
+      const luma = 1 - hsl[VALUE] / 100;
       const scaleFactor = Math.sqrt(luma);
 
       const pixel = document.createElementNS(svgNameSpace, "circle");
       pixel.setAttribute("r", (scaleFactor * radius).toString());
       pixel.setAttribute("cx", (x * radius * 2 + offset).toFixed(0));
       pixel.setAttribute("cy", (y * radius * 2).toFixed(0));
-      pixel.setAttribute("fill", `rgb(${r},${g},${b})`);
+      pixel.setAttribute(
+        "fill",
+        `hsl(${hsl[HUE]}, ${hsl[SATURATION]}%, ${hsl[VALUE]}%)`
+      );
       svg.appendChild(pixel);
     }
   };
