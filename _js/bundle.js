@@ -22,12 +22,13 @@ if (ctx) {
             var pixelNum = i / 4;
             var x = pixelNum % width;
             var y = Math.floor(pixelNum / width);
+            var offset = y % 2 ? radius : 0;
             var r = imageData.data[i];
             var g = imageData.data[i + 1];
             var b = imageData.data[i + 2];
             var pixel = document.createElementNS(svgNameSpace, "circle");
             pixel.setAttribute("r", radius.toString());
-            pixel.setAttribute("cx", (x * radius * 2).toFixed(0));
+            pixel.setAttribute("cx", (x * radius * 2 + offset).toFixed(0));
             pixel.setAttribute("cy", (y * radius * 2).toFixed(0));
             pixel.setAttribute("fill", "rgb(" + r + "," + g + "," + b + ")");
             svg.appendChild(pixel);

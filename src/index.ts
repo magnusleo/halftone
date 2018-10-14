@@ -24,13 +24,14 @@ if (ctx) {
       const pixelNum = i / 4;
       const x = pixelNum % width;
       const y = Math.floor(pixelNum / width);
+      const offset = y % 2 ? radius : 0;
       const r = imageData.data[i];
       const g = imageData.data[i + 1];
       const b = imageData.data[i + 2];
 
       const pixel = document.createElementNS(svgNameSpace, "circle");
       pixel.setAttribute("r", radius.toString());
-      pixel.setAttribute("cx", (x * radius * 2).toFixed(0));
+      pixel.setAttribute("cx", (x * radius * 2 + offset).toFixed(0));
       pixel.setAttribute("cy", (y * radius * 2).toFixed(0));
       pixel.setAttribute("fill", `rgb(${r},${g},${b})`);
       svg.appendChild(pixel);
