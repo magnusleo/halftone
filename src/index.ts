@@ -1,12 +1,7 @@
 const svgNameSpace = "http://www.w3.org/2000/svg";
-const svg = document.createElementNS(svgNameSpace, "svg");
-svg.setAttribute("viewBox", "0 0 210 340");
-svg.setAttribute("height", "210");
-svg.setAttribute("width", "340");
-document.getElementsByTagName("body")[0].appendChild(svg);
-
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
+
 if (ctx) {
   const image = new Image();
   image.src = "example.png";
@@ -14,9 +9,18 @@ if (ctx) {
     ctx.drawImage(image, 0, 0);
     const imageData = ctx.getImageData(0, 0, image.width, image.height);
     const width = imageData.width;
+    const height = imageData.height;
+    const length = imageData.data.length;
     const radius = 5;
+    const factor = radius * 2;
 
-    for (let i = 0; i < imageData.data.length; i += 4) {
+    const svg = document.createElementNS(svgNameSpace, "svg");
+    svg.setAttribute("viewBox", `0 0 ${width * factor} ${height * factor}`);
+    svg.setAttribute("width", `${width * factor}`);
+    svg.setAttribute("height", `${height * factor}`);
+    document.getElementsByTagName("body")[0].appendChild(svg);
+
+    for (let i = 0; i < length; i += 4) {
       const pixelNum = i / 4;
       const x = pixelNum % width;
       const y = Math.floor(pixelNum / width);

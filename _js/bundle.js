@@ -1,10 +1,5 @@
 "use strict";
 var svgNameSpace = "http://www.w3.org/2000/svg";
-var svg = document.createElementNS(svgNameSpace, "svg");
-svg.setAttribute("viewBox", "0 0 210 340");
-svg.setAttribute("height", "210");
-svg.setAttribute("width", "340");
-document.getElementsByTagName("body")[0].appendChild(svg);
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 if (ctx) {
@@ -14,8 +9,16 @@ if (ctx) {
         ctx.drawImage(image_1, 0, 0);
         var imageData = ctx.getImageData(0, 0, image_1.width, image_1.height);
         var width = imageData.width;
+        var height = imageData.height;
+        var length = imageData.data.length;
         var radius = 5;
-        for (var i = 0; i < imageData.data.length; i += 4) {
+        var factor = radius * 2;
+        var svg = document.createElementNS(svgNameSpace, "svg");
+        svg.setAttribute("viewBox", "0 0 " + width * factor + " " + height * factor);
+        svg.setAttribute("width", "" + width * factor);
+        svg.setAttribute("height", "" + height * factor);
+        document.getElementsByTagName("body")[0].appendChild(svg);
+        for (var i = 0; i < length; i += 4) {
             var pixelNum = i / 4;
             var x = pixelNum % width;
             var y = Math.floor(pixelNum / width);
