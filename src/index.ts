@@ -28,9 +28,11 @@ if (ctx) {
       const r = imageData.data[i];
       const g = imageData.data[i + 1];
       const b = imageData.data[i + 2];
+      const luma = 1 - (r + g + b) / 3 / 255;
+      const scaleFactor = Math.sqrt(luma);
 
       const pixel = document.createElementNS(svgNameSpace, "circle");
-      pixel.setAttribute("r", radius.toString());
+      pixel.setAttribute("r", (scaleFactor * radius).toString());
       pixel.setAttribute("cx", (x * radius * 2 + offset).toFixed(0));
       pixel.setAttribute("cy", (y * radius * 2).toFixed(0));
       pixel.setAttribute("fill", `rgb(${r},${g},${b})`);
