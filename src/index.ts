@@ -12,7 +12,7 @@ const ctx = canvas.getContext("2d");
 
 if (ctx) {
   const image = new Image();
-  image.src = "example.png";
+  image.src = "example-pixel.png";
   image.onload = function() {
     canvas.width = image.width;
     canvas.height = image.height;
@@ -43,15 +43,17 @@ if (ctx) {
       const luma = 1 - hsl[VALUE] / 100;
       const scaleFactor = Math.sqrt(luma);
 
-      const pixel = document.createElementNS(svgNameSpace, "circle");
-      pixel.setAttribute("r", (scaleFactor * radius).toString());
-      pixel.setAttribute("cx", (x * radius * 2 + offset).toFixed(0));
-      pixel.setAttribute("cy", (y * radius * 2).toFixed(0));
-      pixel.setAttribute(
-        "fill",
-        `hsl(${hsl[HUE]}, ${hsl[SATURATION]}%, ${hsl[VALUE]}%)`
-      );
-      svg.appendChild(pixel);
+      if (scaleFactor > 0.01) {
+        const pixel = document.createElementNS(svgNameSpace, "circle");
+        pixel.setAttribute("r", (scaleFactor * radius).toString());
+        pixel.setAttribute("cx", (x * radius * 2 + offset).toFixed(0));
+        pixel.setAttribute("cy", (y * radius * 2).toFixed(0));
+        pixel.setAttribute(
+          "fill",
+          `hsl(${hsl[HUE]}, ${hsl[SATURATION]}%, ${hsl[VALUE]}%)`
+        );
+        svg.appendChild(pixel);
+      }
     }
   };
 } else {
