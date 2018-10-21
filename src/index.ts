@@ -1,8 +1,5 @@
-import colorConvert from "color-convert";
+import getAreaHSL from "./getAreaHSL";
 
-const HUE = 0;
-const SATURATION = 1;
-const VALUE = 2;
 const bodyEl = document.getElementsByTagName("body")[0];
 const svgNameSpace = "http://www.w3.org/2000/svg";
 
@@ -43,30 +40,13 @@ function createHalftone(imgSrc: string, resolution = 1) {
         const y = Math.floor(pixelNum / width);
         const offset = 0; // y % 2 ? radius : 0;
 
-        // Make averages
-        let totalHue = 0;
-        let totalSaturation = 0;
-        let totalValue = 0;
-        for (let xOffset = 0; xOffset < resolution; xOffset++) {
-          const yi = y + xOffset;
-          for (let yOffset = 0; yOffset < resolution; yOffset++) {
-            const xi = x + xOffset;
-            const imagePoint = yi * width * 4 + xi * 4;
-
-            const r = imageData.data[imagePoint];
-            const g = imageData.data[imagePoint + 1];
-            const b = imageData.data[imagePoint + 2];
-            const hsl = colorConvert.rgb.hsl([r, g, b]);
-            totalHue += hsl[HUE];
-            totalSaturation += hsl[SATURATION];
-            totalValue += hsl[VALUE];
-          }
-        }
-
-        const sampleCount = resolution * resolution;
-        const hue = totalHue / sampleCount;
-        const saturation = totalSaturation / sampleCount;
-        const value = totalValue / sampleCount;
+        const { hue, saturation, value } = getAreaHSL(
+          x,
+          y,
+          width,
+          resolution,
+          imageData
+        );
         const luma = 1 - value / 100;
         const scaleFactor = Math.sqrt(luma);
 
