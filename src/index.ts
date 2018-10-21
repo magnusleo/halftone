@@ -42,11 +42,32 @@ function createHalftone(imgSrc: string, resolution = 1) {
         }
         const y = Math.floor(pixelNum / width);
         const offset = 0; // y % 2 ? radius : 0;
-        const r = imageData.data[i];
-        const g = imageData.data[i + 1];
-        const b = imageData.data[i + 2];
-        const hsl = colorConvert.rgb.hsl([r, g, b]);
-        const luma = 1 - hsl[VALUE] / 100;
+
+        // Make averages
+        let totalHue = 0;
+        let totalSaturation = 0;
+        let totalValue = 0;
+        for (let xOffset = 0; xOffset < resolution; xOffset++) {
+          const yi = y + xOffset;
+          for (let yOffset = 0; yOffset < resolution; yOffset++) {
+            const xi = x + xOffset;
+            const imagePoint = yi * width * 4 + xi * 4;
+
+            const r = imageData.data[imagePoint];
+            const g = imageData.data[imagePoint + 1];
+            const b = imageData.data[imagePoint + 2];
+            const hsl = colorConvert.rgb.hsl([r, g, b]);
+            totalHue += hsl[HUE];
+            totalSaturation += hsl[SATURATION];
+            totalValue += hsl[VALUE];
+          }
+        }
+
+        const sampleCount = resolution * resolution;
+        const hue = totalHue / sampleCount;
+        const saturation = totalSaturation / sampleCount;
+        const value = totalValue / sampleCount;
+        const luma = 1 - value / 100;
         const scaleFactor = Math.sqrt(luma);
 
         if (scaleFactor > 0.01) {
@@ -54,10 +75,7 @@ function createHalftone(imgSrc: string, resolution = 1) {
           pixel.setAttribute("r", (scaleFactor * radius).toString());
           pixel.setAttribute("cx", (x + offset).toFixed(0));
           pixel.setAttribute("cy", y.toFixed(0));
-          pixel.setAttribute(
-            "fill",
-            `hsl(${hsl[HUE]}, ${hsl[SATURATION]}%, ${hsl[VALUE]}%)`
-          );
+          pixel.setAttribute("fill", `hsl(${hue}, ${saturation}%, ${value}%)`);
           svg.appendChild(pixel);
         }
       }
