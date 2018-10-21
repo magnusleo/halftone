@@ -25,11 +25,12 @@ function createHalftone(imgSrc: string, resolution = 1) {
       const length = imageData.data.length;
       const radius = resolution / 2;
 
+      const fragment = document.createDocumentFragment();
       const svg = document.createElementNS(svgNameSpace, "svg");
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
       svg.setAttribute("width", `${width}`);
       svg.setAttribute("height", `${height}`);
-      bodyEl.appendChild(svg);
+      fragment.appendChild(svg);
 
       for (let i = 0; i < length; i += 4 * resolution) {
         const pixelNum = i / 4;
@@ -60,6 +61,7 @@ function createHalftone(imgSrc: string, resolution = 1) {
           svg.appendChild(pixel);
         }
       }
+      bodyEl.appendChild(fragment);
     };
   } else {
     throw new Error("Canvas context not found");
