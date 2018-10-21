@@ -6,12 +6,14 @@ import getAreaHSL from "./getAreaHSL";
  * Create an SVG halftone version of an bitmap image.
  *
  * @param imageData Image data array from a <canvas> element.
- * @param resolution Number of pixels to combine into one circle. Defaults to 1.
+ * @param options
+ * @param options.resolution Number of pixels to combine into one circle. Defaults to 1.
+ * @param options.offset Offset every other line 50%. Defaults to false.
  * @returns An SVG element with the desired halftone.
  */
 export default function createHalftone(
   imageData: ImageData,
-  resolution = 1
+  { resolution = 1, offset = false } = {}
 ): SVGSVGElement {
   const width = imageData.width;
   const height = imageData.height;
@@ -32,7 +34,11 @@ export default function createHalftone(
       continue;
     }
     const y = Math.floor(pixelNum / width);
-    const offset = 0; // y % 2 ? radius : 0;
+
+    let xOffset = 0;
+    if (offset && y % 2) {
+      xOffset = radius;
+    }
 
     const { hue, saturation, value } = getAreaHSL(
       x,
@@ -48,7 +54,7 @@ export default function createHalftone(
       addCircle(
         svg,
         scaleFactor * radius,
-        x + offset,
+        x + xOffset,
         y,
         hue,
         saturation,
