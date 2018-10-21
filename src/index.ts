@@ -1,7 +1,8 @@
+import addCircle from "./addCircle";
+import { svgNameSpace } from "./common";
 import getAreaHSL from "./getAreaHSL";
 
 const bodyEl = document.getElementsByTagName("body")[0];
-const svgNameSpace = "http://www.w3.org/2000/svg";
 
 function createHalftone(imgSrc: string, resolution = 1) {
   const canvas = document.createElement("canvas");
@@ -51,12 +52,15 @@ function createHalftone(imgSrc: string, resolution = 1) {
         const scaleFactor = Math.sqrt(luma);
 
         if (scaleFactor > 0.01) {
-          const pixel = document.createElementNS(svgNameSpace, "circle");
-          pixel.setAttribute("r", (scaleFactor * radius).toString());
-          pixel.setAttribute("cx", (x + offset).toFixed(0));
-          pixel.setAttribute("cy", y.toFixed(0));
-          pixel.setAttribute("fill", `hsl(${hue}, ${saturation}%, ${value}%)`);
-          svg.appendChild(pixel);
+          addCircle(
+            svg,
+            scaleFactor * radius,
+            x + offset,
+            y,
+            hue,
+            saturation,
+            value
+          );
         }
       }
       bodyEl.appendChild(fragment);
