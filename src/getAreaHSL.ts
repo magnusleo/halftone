@@ -21,6 +21,7 @@ const LIGHTNESS = 2;
  * @param imageWidth Width of the imageData (number of pixels on a line).
  * @param imageData The image to get pixel values from.
  * @param options
+ * @param options.hue Hue offset. Range: -360..360. Defaults to 0.
  * @param options.lightness Lightness (value) multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @param options.size Side of the square area to average (in pixels). Defaults to 1.
@@ -30,7 +31,7 @@ export default function getAreaHSL(
   y: number,
   imageWidth: number,
   imageData: ImageData,
-  { lightness = 1, saturation = 1, size = 1 } = {}
+  { hue = 0, lightness = 1, saturation = 1, size = 1 } = {}
 ): IHSL {
   let totalHue = 0;
   let totalSaturation = 0;
@@ -55,7 +56,7 @@ export default function getAreaHSL(
   const sampleCount = size * size;
 
   return {
-    hue: totalHue / sampleCount,
+    hue: (totalHue / sampleCount + hue) % 360,
     lightness: (totalLightness / sampleCount) * lightness,
     rawHue: totalHue / sampleCount,
     rawLightness: totalLightness / sampleCount,
