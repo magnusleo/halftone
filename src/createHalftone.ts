@@ -47,7 +47,7 @@ export default function createHalftone(
       saturation,
       size: resolution
     });
-    const luma = 1 - hsl.value / 100;
+    const luma = 1 - hsl.lightness / 100;
     const scaleFactor = Math.sqrt(luma);
 
     if (scaleFactor > 0.01) {
@@ -58,7 +58,7 @@ export default function createHalftone(
         y,
         hsl.hue,
         hsl.saturation,
-        hsl.value
+        hsl.lightness
       );
     }
   }

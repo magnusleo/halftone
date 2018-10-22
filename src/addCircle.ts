@@ -9,7 +9,7 @@ import { svgNameSpace } from "./common";
  * @param y Y-position of the circle's center in pixels.
  * @param hue Hue of the circle (0..360)
  * @param saturation Saturation of the circle (0..100)
- * @param value Value (lightness) of the circle (0..100)
+ * @param lightness  Lightness (value) of the circle (0..100)
  */
 export default function addCircle(
   svg: SVGSVGElement,
@@ -18,12 +18,12 @@ export default function addCircle(
   y: number,
   hue: number,
   saturation: number,
-  value: number
+  lightness: number
 ): void {
   const pixel = document.createElementNS(svgNameSpace, "circle");
   pixel.setAttribute("r", radius.toString());
   pixel.setAttribute("cx", x.toFixed(0));
   pixel.setAttribute("cy", y.toFixed(0));
-  pixel.setAttribute("fill", `hsl(${hue}, ${saturation}%, ${value}%)`);
+  pixel.setAttribute("fill", `hsl(${hue}, ${saturation}%, ${lightness}%)`);
   svg.appendChild(pixel);
 }

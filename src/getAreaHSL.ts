@@ -3,15 +3,15 @@ import colorConvert from "color-convert";
 interface IHSL {
   hue: number;
   saturation: number;
-  value: number;
+  lightness: number;
 }
 
 const HUE = 0;
 const SATURATION = 1;
-const VALUE = 2;
+const LIGHTNESS = 2;
 
 /**
- * Get the average hue, saturation and value of a region from an image.
+ * Get the average hue, saturation and lightness (value) of a region from an image.
  *
  * @param x x-coordinate for the top-left corner of the are to average.
  * @param y y-coordinate for the top-left corner of the are to average.
@@ -31,7 +31,7 @@ export default function getAreaHSL(
 ): IHSL {
   let totalHue = 0;
   let totalSaturation = 0;
-  let totalValue = 0;
+  let totalLightness = 0;
 
   for (let xOffset = 0; xOffset < size; xOffset++) {
     const yi = y + xOffset;
@@ -45,7 +45,7 @@ export default function getAreaHSL(
       const hsl = colorConvert.rgb.hsl([r, g, b]);
       totalHue += hsl[HUE];
       totalSaturation += hsl[SATURATION] * saturation;
-      totalValue += hsl[VALUE] * lightness;
+      totalLightness += hsl[LIGHTNESS] * lightness;
     }
   }
 
@@ -53,7 +53,7 @@ export default function getAreaHSL(
 
   return {
     hue: totalHue / sampleCount,
-    saturation: totalSaturation / sampleCount,
-    value: totalValue / sampleCount
+    lightness: totalLightness / sampleCount,
+    saturation: totalSaturation / sampleCount
   };
 }
