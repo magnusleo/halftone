@@ -7,6 +7,7 @@ import getAreaHSL from "./getAreaHSL";
  *
  * @param imageData Image data array from a <canvas> element.
  * @param options
+ * @param options.lightness Lightness (value) multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @param options.resolution Number of pixels to combine into one circle. Defaults to 1.
  * @param options.offset Offset every other line 50%. Defaults to false.
  * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
@@ -14,7 +15,7 @@ import getAreaHSL from "./getAreaHSL";
  */
 export default function createHalftone(
   imageData: ImageData,
-  { resolution = 1, offset = false, saturation = 1 } = {}
+  { lightness = 1, resolution = 1, offset = false, saturation = 1 } = {}
 ): SVGSVGElement {
   const width = imageData.width;
   const height = imageData.height;
@@ -42,6 +43,7 @@ export default function createHalftone(
     }
 
     const hsl = getAreaHSL(x, y, width, imageData, {
+      lightness,
       saturation,
       size: resolution
     });
