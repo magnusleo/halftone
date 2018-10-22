@@ -14,7 +14,7 @@ const bodyEl = document.getElementsByTagName("body")[0];
   const photoExample = createHalftone(photoImageData, {
     lightness: 0.8,
     resolution: 10,
-    saturation: 1.25
+    saturation: 1.5
   });
   bodyEl.appendChild(photoExample);
 })();

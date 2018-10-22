@@ -2,8 +2,11 @@ import colorConvert from "color-convert";
 
 interface IHSL {
   hue: number;
+  rawHue: number;
   saturation: number;
+  rawSaturation: number;
   lightness: number;
+  rawLightness: number;
 }
 
 const HUE = 0;
@@ -44,8 +47,8 @@ export default function getAreaHSL(
       const b = imageData.data[imagePoint + 2];
       const hsl = colorConvert.rgb.hsl([r, g, b]);
       totalHue += hsl[HUE];
-      totalSaturation += hsl[SATURATION] * saturation;
-      totalLightness += hsl[LIGHTNESS] * lightness;
+      totalSaturation += hsl[SATURATION];
+      totalLightness += hsl[LIGHTNESS];
     }
   }
 
@@ -53,7 +56,10 @@ export default function getAreaHSL(
 
   return {
     hue: totalHue / sampleCount,
-    lightness: totalLightness / sampleCount,
-    saturation: totalSaturation / sampleCount
+    lightness: (totalLightness / sampleCount) * lightness,
+    rawHue: totalHue / sampleCount,
+    rawLightness: totalLightness / sampleCount,
+    rawSaturation: totalSaturation / sampleCount,
+    saturation: (totalSaturation / sampleCount) * saturation
   };
 }
