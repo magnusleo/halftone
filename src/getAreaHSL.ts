@@ -18,13 +18,16 @@ const VALUE = 2;
  * @param imageWidth Width of the imageData (number of pixels on a line).
  * @param size Side of the square area to average (in pixels).
  * @param imageData The image to get pixel values from.
+ * @param options
+ * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  */
 export default function getAreaHSL(
   x: number,
   y: number,
   imageWidth: number,
   size: number,
-  imageData: ImageData
+  imageData: ImageData,
+  { saturation = 1 } = {}
 ): IHSL {
   let totalHue = 0;
   let totalSaturation = 0;
@@ -41,15 +44,16 @@ export default function getAreaHSL(
       const b = imageData.data[imagePoint + 2];
       const hsl = colorConvert.rgb.hsl([r, g, b]);
       totalHue += hsl[HUE];
-      totalSaturation += hsl[SATURATION];
+      totalSaturation += hsl[SATURATION] * saturation;
       totalValue += hsl[VALUE];
     }
   }
 
   const sampleCount = size * size;
-  const hue = totalHue / sampleCount;
-  const saturation = totalSaturation / sampleCount;
-  const value = totalValue / sampleCount;
 
-  return { hue, saturation, value };
+  return {
+    hue: totalHue / sampleCount,
+    saturation: totalSaturation / sampleCount,
+    value: totalValue / sampleCount
+  };
 }

@@ -9,11 +9,12 @@ import getAreaHSL from "./getAreaHSL";
  * @param options
  * @param options.resolution Number of pixels to combine into one circle. Defaults to 1.
  * @param options.offset Offset every other line 50%. Defaults to false.
+ * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @returns An SVG element with the desired halftone.
  */
 export default function createHalftone(
   imageData: ImageData,
-  { resolution = 1, offset = false } = {}
+  { resolution = 1, offset = false, saturation = 1 } = {}
 ): SVGSVGElement {
   const width = imageData.width;
   const height = imageData.height;
@@ -40,14 +41,10 @@ export default function createHalftone(
       xOffset = radius;
     }
 
-    const { hue, saturation, value } = getAreaHSL(
-      x,
-      y,
-      width,
-      resolution,
-      imageData
-    );
-    const luma = 1 - value / 100;
+    const hsl = getAreaHSL(x, y, width, resolution, imageData, {
+      saturation
+    });
+    const luma = 1 - hsl.value / 100;
     const scaleFactor = Math.sqrt(luma);
 
     if (scaleFactor > 0.01) {
@@ -56,9 +53,9 @@ export default function createHalftone(
         scaleFactor * radius,
         x + xOffset,
         y,
-        hue,
-        saturation,
-        value
+        hsl.hue,
+        hsl.saturation,
+        hsl.value
       );
     }
   }

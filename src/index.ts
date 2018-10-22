@@ -11,6 +11,9 @@ const bodyEl = document.getElementsByTagName("body")[0];
   bodyEl.appendChild(document.createElement("br"));
 
   const photoImageData = await loadPixelData("example-photo.jpg");
-  const photoExample = createHalftone(photoImageData, { resolution: 10 });
+  const photoExample = createHalftone(photoImageData, {
+    resolution: 10,
+    saturation: 1.25
+  });
   bodyEl.appendChild(photoExample);
 })();
