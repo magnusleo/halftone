@@ -16,18 +16,17 @@ const VALUE = 2;
  * @param x x-coordinate for the top-left corner of the are to average.
  * @param y y-coordinate for the top-left corner of the are to average.
  * @param imageWidth Width of the imageData (number of pixels on a line).
- * @param size Side of the square area to average (in pixels).
  * @param imageData The image to get pixel values from.
  * @param options
  * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
+ * @param options.size Side of the square area to average (in pixels). Defaults to 1.
  */
 export default function getAreaHSL(
   x: number,
   y: number,
   imageWidth: number,
-  size: number,
   imageData: ImageData,
-  { saturation = 1 } = {}
+  { saturation = 1, size = 1 } = {}
 ): IHSL {
   let totalHue = 0;
   let totalSaturation = 0;

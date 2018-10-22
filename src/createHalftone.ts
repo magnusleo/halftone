@@ -41,8 +41,9 @@ export default function createHalftone(
       xOffset = radius;
     }
 
-    const hsl = getAreaHSL(x, y, width, resolution, imageData, {
-      saturation
+    const hsl = getAreaHSL(x, y, width, imageData, {
+      saturation,
+      size: resolution
     });
     const luma = 1 - hsl.value / 100;
     const scaleFactor = Math.sqrt(luma);
