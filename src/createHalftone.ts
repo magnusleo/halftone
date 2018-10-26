@@ -11,6 +11,7 @@ import getAreaHSL from "./getAreaHSL";
  * @param options.hue Hue offset. Range: -360..360. Defaults to 0.
  * @param options.lightness Lightness (value) multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @param options.offset Offset every other line 50%. Defaults to false.
+ * @param options.pixelScale Factor to scale the resulting pixels with. Defaults to 1.
  * @param options.resolution Number of pixels to combine into one circle. Defaults to 1.
  * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @returns An SVG element with the desired halftone.
@@ -22,6 +23,7 @@ export default function createHalftone(
     hue = 0,
     lightness = 1,
     offset = false,
+    pixelScale = 1,
     resolution = 1,
     saturation = 1
   } = {}
@@ -58,7 +60,7 @@ export default function createHalftone(
       size: resolution
     });
     const luma = 1 - hsl.rawLightness / 100;
-    const scaleFactor = Math.sqrt(luma);
+    const scaleFactor = Math.sqrt(luma) * pixelScale;
 
     if (scaleFactor > 0.01) {
       addCircle(

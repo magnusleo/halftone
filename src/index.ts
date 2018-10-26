@@ -13,6 +13,7 @@ const bodyEl = document.getElementsByTagName("body")[0];
   const photoImageData = await loadPixelData("example-photo.jpg");
   const photoExample = createHalftone(photoImageData, {
     lightness: 0.8,
+    pixelScale: 1.1,
     resolution: 10,
     saturation: 1.5
   });
