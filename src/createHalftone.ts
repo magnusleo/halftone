@@ -9,6 +9,7 @@ import getAreaHSL from "./getAreaHSL";
  * @param options
  * @param options.canvasScale Factor to scale up the resulting canvas with. Defaults to 1.
  * @param options.hue Hue offset. Range: -360..360. Defaults to 0.
+ * @param options.invert Invert lightness-to-size calculations and use a black background. Defaults to false.
  * @param options.lightness Lightness (value) multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @param options.offset Offset every other line 50%. Defaults to false.
  * @param options.pixelScale Factor to scale the resulting pixels with. Defaults to 1.
@@ -21,6 +22,7 @@ export default function createHalftone(
   {
     canvasScale = 1,
     hue = 0,
+    invert = false,
     lightness = 1,
     offset = false,
     pixelScale = 1,
@@ -37,6 +39,9 @@ export default function createHalftone(
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   svg.setAttribute("width", `${width * canvasScale}`);
   svg.setAttribute("height", `${height * canvasScale}`);
+  if (invert) {
+    svg.style.backgroundColor = "#000";
+  }
 
   for (let i = 0; i < length; i += 4 * resolution) {
     const pixelNum = i / 4;
@@ -59,7 +64,7 @@ export default function createHalftone(
       saturation,
       size: resolution
     });
-    const luma = 1 - hsl.rawLightness / 100;
+    const luma = invert ? hsl.rawLightness / 100 : 1 - hsl.rawLightness / 100;
     const scaleFactor = Math.sqrt(luma) * pixelScale;
 
     if (scaleFactor > 0.01) {
