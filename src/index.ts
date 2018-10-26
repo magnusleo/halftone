@@ -5,7 +5,7 @@ const bodyEl = document.getElementsByTagName("body")[0];
 
 (async function() {
   const pixelImageData = await loadPixelData("example-pixel.png");
-  const pixelExample = createHalftone(pixelImageData);
+  const pixelExample = createHalftone(pixelImageData, { canvasScale: 10 });
   bodyEl.appendChild(pixelExample);
 
   bodyEl.appendChild(document.createElement("br"));

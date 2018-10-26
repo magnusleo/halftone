@@ -7,20 +7,22 @@ import getAreaHSL from "./getAreaHSL";
  *
  * @param imageData Image data array from a <canvas> element.
  * @param options
+ * @param options.canvasScale Factor to scale up the resulting canvas with. Defaults to 1.
  * @param options.hue Hue offset. Range: -360..360. Defaults to 0.
  * @param options.lightness Lightness (value) multiplier. 0..1 decreases and >1 increases. Defaults to 1.
- * @param options.resolution Number of pixels to combine into one circle. Defaults to 1.
  * @param options.offset Offset every other line 50%. Defaults to false.
+ * @param options.resolution Number of pixels to combine into one circle. Defaults to 1.
  * @param options.saturation Saturation multiplier. 0..1 decreases and >1 increases. Defaults to 1.
  * @returns An SVG element with the desired halftone.
  */
 export default function createHalftone(
   imageData: ImageData,
   {
+    canvasScale = 1,
     hue = 0,
     lightness = 1,
-    resolution = 1,
     offset = false,
+    resolution = 1,
     saturation = 1
   } = {}
 ): SVGSVGElement {
@@ -31,8 +33,8 @@ export default function createHalftone(
 
   const svg = document.createElementNS(svgNameSpace, "svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.setAttribute("width", `${width}`);
-  svg.setAttribute("height", `${height}`);
+  svg.setAttribute("width", `${width * canvasScale}`);
+  svg.setAttribute("height", `${height * canvasScale}`);
 
   for (let i = 0; i < length; i += 4 * resolution) {
     const pixelNum = i / 4;
