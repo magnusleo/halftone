@@ -44,13 +44,19 @@ export default function createHalftone(
   }
 
   for (let i = 0; i < length; i += 4 * resolution) {
-    const pixelNum = i / 4;
-    const x = pixelNum % width;
+    let pixelNum = i / 4;
+    let x = pixelNum % width;
+
     if (x + resolution > width) {
-      i += (width - x) * 4; // Jump to start of next line
-      i += width * resolution * 4; // Jump 1 resolution unit down
-      continue;
+      // We are beyond the image's right edge
+      // Go to start of this line
+      i -= x * 4;
+      x = 0;
+      // Jump 1 resolution unit down
+      i += width * resolution * 4;
+      pixelNum = i / 4;
     }
+
     const y = Math.floor(pixelNum / width);
 
     let xOffset = 0;
@@ -71,8 +77,8 @@ export default function createHalftone(
       addCircle(
         svg,
         scaleFactor * radius,
-        x + xOffset,
-        y,
+        x + xOffset + radius,
+        y + radius,
         hsl.hue,
         hsl.saturation,
         hsl.lightness

@@ -22,8 +22,8 @@ export default function addCircle(
 ): void {
   const pixel = document.createElementNS(svgNameSpace, "circle");
   pixel.setAttribute("r", radius.toPrecision(3));
-  pixel.setAttribute("cx", x.toFixed(0));
-  pixel.setAttribute("cy", y.toFixed(0));
+  pixel.setAttribute("cx", x.toFixed(1));
+  pixel.setAttribute("cy", y.toFixed(1));
   pixel.setAttribute(
     "fill",
     `hsl(${hue}, ${saturation.toFixed(0)}%, ${lightness.toFixed(0)}%)`
